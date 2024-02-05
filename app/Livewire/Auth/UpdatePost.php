@@ -11,11 +11,11 @@ class UpdatePost extends Component
 {
     public PostForm $form;
 
-    public $tabs = [];
+    public $locales = [];
 
     public function mount(Post $post)
     {
-        $this->tabs = config('translatable.locales');
+        $this->locales = config('translatable.locales');
 
         $this->form->setPost($post);
     }
