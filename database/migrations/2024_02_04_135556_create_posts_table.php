@@ -24,7 +24,7 @@ return new class extends Migration
         });
 
         Schema::create('post_translations', function (Blueprint $table) {
-
+            $table->id();
             $table->foreignId('post_id')
                 ->constrained()
                 ->onDelete('cascade');

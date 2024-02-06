@@ -77,7 +77,7 @@ class PostForm extends Form
     public function update()
     {
         $this->post->update(
-            $this->all()
+            $this->translations
         );
     }
 }
