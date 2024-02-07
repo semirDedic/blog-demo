@@ -2,10 +2,10 @@
 
 namespace App\Models\Traits;
 
-use App\Models\Media;
+//use App\Models\Media;
 use Spatie\MediaLibrary\Conversions\Conversion;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media as SpatieMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;// as SpatieMedia;
 
 trait HasMedia
 {
@@ -34,10 +34,10 @@ trait HasMedia
     /**
      * Register media conversions for field.
      *
-     * @param  SpatieMedia  $media
+     * @param  Media  $media
      * @return void
      */
-    public function registerMediaConversions(SpatieMedia $media = null): void
+    public function registerMediaConversions(Media $media = null): void
     {
         $possibleConversions = config('media-library.mediaconversions');
 
