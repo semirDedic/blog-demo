@@ -19,22 +19,32 @@ class PostForm extends Form
         'bs' => [
             'title' => '',
             'text' => '',
+            'excerpt' => '',
             'h1' => '',
             'slug' => '',
         ],
         'en' => [
             'title' => '',
             'text' => '',
+            'excerpt' => '',
             'h1' => '',
             'slug' => '',
         ],
     ];
 
+    #[Validate('image|max:1024')] // 1MB Max
+    public $photo;
+
+    #[Validate('required|boolean')]
+    public $active = true;
+
     public function rules()
     {
         return RuleFactory::make([
             'translations.%title%' => 'required|string',
+            'translations.%slug%' => 'required|string',
             'translations.%text%' => 'required|string',
+            'translations.%excerpt%' => 'required|string',
         ]);
     }
 
@@ -43,6 +53,10 @@ class PostForm extends Form
         $this->post = $post;
 
         $this->translations = $post->getTranslationAttribute();
+
+        $this->photo = $post->getImageAttribute();
+
+        $this->active = $post->active;
     }
 
     public function store()
@@ -51,23 +65,30 @@ class PostForm extends Form
 
         $post = Post::create([
             'user_id' => Auth::user()->id,
-            'active' => true,
+            'active' => $this->active,
         ]);
 
         $post->fill([
             'bs' => [
                 'title' => $this->translations["bs"]["title"],
+                'slug' => $this->translations["bs"]["slug"],
                 'text' => $this->translations["bs"]["text"],
+                'excerpt' => $this->translations["bs"]["excerpt"],
                 'h1' => $this->translations["bs"]["title"],
-                'slug' => Str::slug($this->translations["bs"]["title"], '-'),
             ],
             'en' => [
                 'title' => $this->translations["en"]["title"],
+                'slug' => $this->translations["en"]["slug"],
                 'text' => $this->translations["en"]["text"],
+                'excerpt' => $this->translations["bs"]["excerpt"],
                 'h1' => $this->translations["en"]["title"],
-                'slug' => Str::slug($this->translations["en"]["title"], '-'),
             ],
         ]);
+
+        if (!empty($this->photo)) {
+            $post->addMedia($this->photo)
+                ->toMediaCollection();
+        }
 
         $post->save();
 
