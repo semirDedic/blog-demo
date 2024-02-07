@@ -42,7 +42,7 @@ class PostForm extends Form
     {
         $this->post = $post;
 
-        $this->translations = $post->getTranslationsArray();
+        $this->translations = $post->getTranslationAttribute();
     }
 
     public function store()
